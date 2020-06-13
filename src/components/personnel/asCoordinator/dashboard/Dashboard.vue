@@ -1,50 +1,29 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" md="4" sm="12">
-        <v-select
-          v-model="organizationId"
-          label="Select Organizationn"
-          item-value="id"
-          item-text="name"
-        ></v-select>
+      <v-col cols="12" md="4" sm="12"></v-col>
+      <v-col cols="12" md="12" sm="12">
+        <v-card color="accent" router to="/personnel/coordinator/assignment">
+          <v-row>
+            <v-col class="title">Assignments</v-col>
+          </v-row>
+          <v-row>
+            <v-col class="display-1">3</v-col>
+          </v-row>
+        </v-card>
       </v-col>
       <v-col cols="12" md="12" sm="12">
-        <v-card class="text-center ma-2" min-width="300" :loading="tableLoad">
-          <v-card-title>
-            <v-btn small fab color="primary">
-              <v-icon>zoom_in</v-icon>
-            </v-btn>Assignments
-          </v-card-title>
-          <v-card-text>
-            <v-autocomplete
-              label="Task"
-              autocomplete
-              :loading="tableLoad"
-              cache-items
-              required
-              :items="dataAssignment.list"
-              item-text="task_name"
-              return-object
-              v-model="assignment"
-            ></v-autocomplete>
-          </v-card-text>
-          <v-scale-transition>
-            <v-card-text v-if="reportLoad">
-              <v-progress-circular indeterminate color="primary"></v-progress-circular>
-            </v-card-text>
-          </v-scale-transition>
-          <v-slide-y-transition>
-            <template v-if="assignment">
-              <v-card-text v-if="!reportLoad">
-                <p>Staff Name : {{assignment.staff_personnel_name}}</p>
-                <p>Type : {{assignment.assignment_type}}</p>
-                <p>Target : {{assignment.target_name}}</p>
-                <p>Performance : {{getPerformance(dataAssignment.total, dataReport.total)}} %</p>
-              </v-card-text>
-            </template>
-          </v-slide-y-transition>
+        <v-card color="accent">
+          <v-row>
+            <v-col class="title">Performance</v-col>
+          </v-row>
+          <v-row>
+            <v-col class="display-1">80%</v-col>
+          </v-row>
         </v-card>
+      </v-col>
+      <v-col cols="12" md="12" sm="12">
+        <v-btn color="primary" block>Report</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -65,7 +44,15 @@ export default {
       assignment: "",
       dataReport: { total: 0, list: [] },
       tableLoad: false,
-      reportLoad: false
+      reportLoad: false,
+      organization: {
+        list: [
+          {
+            id: "9bb25790-a7f3-48a3-837f-66117905bb79",
+            name: "Area Bandung Tengah"
+          }
+        ]
+      }
     };
   },
   mounted: function() {

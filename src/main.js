@@ -12,6 +12,7 @@ import Notification from "@/components/Notification";
 Vue.component('notification', Notification);
 
 Vue.use(VueAxios, axios);
+Vue.use(require('vue-moment'));
 Vue.config.productionTip = false;
 
 Vue.mixin({

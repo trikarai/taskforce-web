@@ -103,10 +103,14 @@ export default {
         username: "tbig",
         password: "tbig2019"
       },
-      activate: this.$route.query.activate
+      activate: false
     };
   },
-  created: function() {},
+  created: function() {
+    // if (this.$route.query.activate) {
+    //   this.activate = this.$route.query.activate;
+    // }
+  },
   mounted: function() {},
   components: {},
   methods: {

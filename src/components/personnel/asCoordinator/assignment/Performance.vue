@@ -2,15 +2,21 @@
   <v-container>
     <v-row>
       <!-- {{authData}} -->
-      <v-col cols="12" md="3" sm="12">
-        <v-btn block color="primary" @click="newAssignment('survey')">
-          <v-icon left>add</v-icon>Assign Survey
-        </v-btn>
-      </v-col>
-      <v-col cols="12" md="3" sm="12" @click="newAssignment('canvas')">
-        <v-btn block color="primary">
-          <v-icon left>add</v-icon>Assign Canvas
-        </v-btn>
+      <v-col cols="12" md="12" sm="12">
+        <v-card color="accent" router to="/personnel/coordinator/assignment">
+          <v-row>
+            <v-col class="title">BTS Monitoring</v-col>
+          </v-row>
+          <v-row>
+            <v-col>Staff 3</v-col>
+          </v-row>
+          <v-row>
+            <v-col>this month : 80% (4/5)</v-col>
+          </v-row>
+          <v-row>
+            <v-col>last month : 100% (5/5)</v-col>
+          </v-row>
+        </v-card>
       </v-col>
     </v-row>
     <v-row>
@@ -28,7 +34,7 @@
     <v-row class="hidden-sm-and-down">
       <v-col>
         <!-- {{dataList}} -->
-        <v-data-table
+        <!-- <v-data-table
           :search="search"
           :loading="tableLoad"
           :headers="tableHeaders"
@@ -41,16 +47,16 @@
             <v-btn small color="warning" @click="leftAct(item, 'Delete')">
               <v-icon small>delete</v-icon>
             </v-btn>
-          </template>
-          <!-- <template v-slot:item.manage="{item}">
+        </template>-->
+        <!-- <template v-slot:item.manage="{item}">
             <v-btn small color="accent" class="mr-1" @click="gotoSection(item.id)" disabled>
               <v-icon small left>power_input</v-icon>Section
             </v-btn>
             <v-btn small color="accent" class="mr-0" @click="gotoSegment(item.id)">
               <v-icon small left>category</v-icon>Segment
             </v-btn>
-          </template>-->
-        </v-data-table>
+        </template>-->
+        <!-- </v-data-table> -->
       </v-col>
     </v-row>
     <v-row class="hidden-md-and-up">
@@ -58,7 +64,7 @@
         <v-data-iterator
           :search="search"
           :loading="tableLoad"
-          :items="assignment"
+          :items="submitdata"
           :options.sync="options"
           :server-items-length="dataList.total"
           class="elevation-1"
@@ -68,42 +74,30 @@
               <v-col v-for="item in props.items" :key="item.name" cols="12" sm="6" md="4" lg="3">
                 <v-card class="ma-1">
                   <v-card-title>
-                    <h4>{{item.task_name}}</h4>
+                    <h4>submit time: {{item.submit_time}}</h4>
                   </v-card-title>
                   <v-divider></v-divider>
                   <v-list>
                     <v-list-item>
                       <v-list-item-avatar>
-                        <v-icon small>directions_run</v-icon>
+                        <!-- <v-icon small>directions_run</v-icon> -->
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-title>{{item.staff_personnel_name}}</v-list-item-title>
+                        <v-list-item-title>start: {{item.start_time}}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider :inset="true"></v-divider>
                     <v-list-item>
                       <v-list-item-avatar>
-                        <v-icon small>assignment</v-icon>
+                        <!-- <v-icon small>assignment</v-icon> -->
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-title>{{item.assignment_type}}</v-list-item-title>
+                        <v-list-item-title>end: {{item.end_time}}</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-divider :inset="true"></v-divider>
-                    <v-list-item>
-                      <v-list-item-avatar>
-                        <v-icon small>map</v-icon>
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        <v-list-item-title>{{item.target_name}}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
                     <v-card-actions>
-                      <v-btn color="accent" @click="gotoPerformance(item.id)">
-                        <v-icon left>people</v-icon>View Performance
-                      </v-btn>
-                      <v-spacer></v-spacer>
-                      <v-btn color="accent">
+                      <v-btn color="accent" @click="gotoReport(item.id)">
                         <v-icon left>people</v-icon>View Report
                       </v-btn>
                     </v-card-actions>
@@ -143,30 +137,32 @@ export default {
       coordinatorId: "0eeca071-cee0-4d45-adeb-16f12dcdea8a",
       search: "",
       dataList: { total: 0, list: [] },
-      assignment: [
+      assignment: {
+        id: "642ec2d1-9835-44f3-aa6b-2d684080171e",
+        staff_personnel_name: "personnel empat tbig",
+        task_name: "Mobile App User Survey",
+        assignment_type: "SURVEY",
+        target_name: "Kec. Cicendo",
+        min_sampling: 3
+      },
+      submitdata: [
         {
-          id: "642ec2d1-9835-44f3-aa6b-2d684080171e",
-          staff_personnel_name: "personnel empat tbig",
-          task_name: "Mobile App User Survey",
-          assignment_type: "SURVEY",
-          target_name: "Kec. Cicendo",
-          min_sampling: 3
+          id: "32er212-w323232-qwqwq",
+          submit_time: "26 Sept 2019, 08:49:10",
+          start_time: "01 Sept 2019 00:00:00",
+          end_time: "30 Sept 2019 23:59:59"
         },
         {
-          id: "96d61439-c43a-41f5-b1e4-aed36753af35",
-          staff_personnel_name: "personnel tiga tbig",
-          task_name: "Mobile App User Survey",
-          assignment_type: "SURVEY",
-          target_name: "Kec. Cilaki",
-          min_sampling: 3
+          id: "32er212-w323232-qwqwq",
+          submit_time: "26 Sept 2019, 08:49:10",
+          start_time: "01 Sept 2019 00:00:00",
+          end_time: "30 Sept 2019 23:59:59"
         },
         {
-          id: "bf72e06b-f6b9-439e-8d92-c5b5981036b5",
-          staff_personnel_name: "personnel lima tbig",
-          task_name: "Mobile App User Survey",
-          assignment_type: "SURVEY",
-          target_name: "Kec. Sumur Bandung",
-          min_sampling: 3
+          id: "32er212-w323232-qwqwq",
+          submit_time: "26 Sept 2019, 08:49:10",
+          start_time: "01 Sept 2019 00:00:00",
+          end_time: "30 Sept 2019 23:59:59"
         }
       ],
       tableLoad: false,
@@ -276,9 +272,9 @@ export default {
     newAssignment(type) {
       this.$router.push({ path: "/personnel/coordinator/assignment/" + type });
     },
-    gotoPerformance(id) {
+    gotoReport(id) {
       this.$router.push({
-        path: "/personnel/coordinator/assignment/" + id + "/performance"
+        path: "/personnel/coordinator/assignment/" + id + "/report"
       });
     }
   }

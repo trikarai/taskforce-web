@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import HelloWorld from './components/HelloWorld';
 
 
 //ROOT
@@ -32,6 +33,8 @@ import PersonnelDashboard from './components/personnel/dashboard/Dashboard';
 //--as Coordinator
 import CoordinatorDashboard from './components/personnel/asCoordinator/dashboard/Dashboard';
 import CoordinatorAssignment from './components/personnel/asCoordinator/assignment/Assignment';
+import CoordinatorAssignmentPerformance from './components/personnel/asCoordinator/assignment/Performance';
+import CoordinatorAssignmentReport from './components/personnel/asCoordinator/assignment/Report';
 import CoordinatorAssignmentCreate from './components/personnel/asCoordinator/assignment/AssignmentForm';
 //--as Staff
 import StaffDashboard from './components/personnel/asStaff/dashboard/Dashboard';
@@ -42,13 +45,18 @@ import StaffAssignmentReportForm from './components/personnel/asStaff/task/repor
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/root',
       name: 'Root Login',
       component: LoginRoot
+    },
+    {
+      path: '/masuk',
+      name: 'Masuk Tenant',
+      component: LoginAdmin
     },
     {
       path: '/admin',
@@ -240,6 +248,22 @@ export default new Router({
           }
         },
         {
+          path: '/personnel/coordinator/assignment/:assignmentId/performance',
+          name: 'Assignment Performance',
+          component: CoordinatorAssignmentPerformance,
+          meta: {
+            level: 1
+          }
+        },
+        {
+          path: '/personnel/coordinator/assignment/:assignmentId/report',
+          name: 'Assignment Report',
+          component: CoordinatorAssignmentReport,
+          meta: {
+            level: 1
+          }
+        },
+        {
           path: '/personnel/coordinator/assignment/:type',
           name: 'Create New Assignment',
           component: CoordinatorAssignmentCreate,
@@ -288,6 +312,7 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
+    },
+    { path: '*', component: HelloWorld }
   ]
 });

@@ -2,23 +2,13 @@
   <v-container grid-list-xs>
     <v-row>
       <v-col>
+        <pre>
+          {{params}}         
+        </pre>
         <template>
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-card>
               <v-card-text>
-                <v-select
-                  :rules="rulesRequired"
-                  :items="items"
-                  v-model="params.period_unit"
-                  label="Periode Unit"
-                ></v-select>
-                <v-text-field
-                  :rules="rulesRequired"
-                  label="Periode Length"
-                  v-model="params.period_length"
-                  type="number"
-                ></v-text-field>
-
                 <v-menu
                   ref="menu"
                   v-model="menu"
@@ -103,6 +93,46 @@
                     <v-btn text color="primary" @click="$refs.menu2.save(date2)">OK</v-btn>
                   </v-date-picker>
                 </v-menu>
+
+                <v-menu
+                  ref="menu4"
+                  v-model="menu4"
+                  :close-on-content-click="false"
+                  :return-value.sync="date4"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      :rules="rulesRequired"
+                      v-model="date4"
+                      label="End Time"
+                      prepend-icon="event"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker v-model="date4" format="24hr" scrollable>
+                    <div class="flex-grow-1"></div>
+                    <v-btn text color="primary" @click="menu4 = false">Cancel</v-btn>
+                    <v-btn text color="primary" @click="$refs.menu4.save(date4)">OK</v-btn>
+                  </v-time-picker>
+                </v-menu>
+
+                <v-select
+                  :rules="rulesRequired"
+                  :items="items"
+                  v-model="params.period_unit"
+                  label="Periode Unit"
+                ></v-select>
+                <v-text-field
+                  :rules="rulesRequired"
+                  label="Periode Length"
+                  v-model="params.period_length"
+                  type="number"
+                ></v-text-field>
 
                 <v-text-field
                   :rules="rulesRequired"
@@ -200,10 +230,63 @@ export default {
         { text: "Day", value: "DAY" },
         { text: "Open", value: "OPEN" }
       ],
-      checkbox: false
+      checkbox: false,
+      value: ""
     };
   },
+  watch: {
+    // "params.period_unit": "getPeriodDate",
+    date: "getPeriodDateStart",
+    date2: "getPeriodDateEnd",
+    date3: "getPeriodTimeStart",
+    date4: "getPeriodTimeEnd"
+  },
   methods: {
+    getPeriodTimeStart() {
+      this.params.start_time.hour = this.date3.split(":")[0];
+      this.params.start_time.minute = this.date3.split(":")[1];
+      this.params.start_time.second = "00";
+    },
+    getPeriodTimeEnd() {
+      this.params.end_time.hour = this.date4.split(":")[0];
+      this.params.end_time.minute = this.date4.split(":")[1];
+      this.params.end_time.second = "00";
+    },
+    getPeriodDateEnd() {
+      var dt = new Date(this.date2);
+      this.params.end_time.date = this.date2;
+      this.params.end_time.year = this.$moment(dt).format("Y");
+      this.params.end_time.month = this.$moment(dt).format("M");
+      this.params.end_time.week = this.$moment(dt).format("W");
+      this.params.end_time.day = this.$moment(dt).format("D");
+    },
+    getPeriodDateStart() {
+      var dt = new Date(this.date);
+      this.params.start_time.date = this.date;
+      this.params.start_time.year = this.$moment(dt).format("Y");
+      this.params.start_time.month = this.$moment(dt).format("M");
+      this.params.start_time.week = this.$moment(dt).format("W");
+      this.params.start_time.day = this.$moment(dt).format("D");
+
+      // switch (this.params.period_unit) {
+      //   case "YEAR":
+      //     this.params.start_time.year = this.$moment(dt).format("Y");
+      //     break;
+      //   case "MONTH":
+      //     this.params.start_time.month = this.$moment(dt).format("M");
+      //     break;
+      //   case "WEEK":
+      //     this.params.start_time.week = this.$moment(dt).format("W");
+      //     break;
+      //   case "DAY":
+      //     this.params.start_time.day = this.$moment(dt).format("D");
+      //     break;
+      //   case "OPEN":
+      //     break;
+      //   default:
+      //     break;
+      // }
+    },
     submit() {
       if (this.$refs.form.validate()) {
       }
